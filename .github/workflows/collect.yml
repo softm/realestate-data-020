@@ -1,0 +1,25 @@
+name: Collect regional transactions
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/collect.yml']
+  workflow_dispatch:
+    inputs:
+      mode:
+        type: choice
+        options: [bootstrap, build, auto, backfill, refresh]
+        default: bootstrap
+  schedule:
+    - cron: '57 * * * *'
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+jobs:
+  regional:
+    if: github.event_name != 'schedule' || vars.COLLECTION_ENABLED == 'true'
+    uses: softm/softm.tojihannun/.github/workflows/prepare-data-shard.yml@987926511865f87ed7466ca3b7bef70eac555a73
+    with:
+      mode: ${{ github.event_name == 'schedule' && 'auto' || inputs.mode || 'bootstrap' }}
+    secrets:
+      MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
