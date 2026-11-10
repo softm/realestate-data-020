@@ -1,0 +1,1 @@
+{"action":"pause collection and migrate complete district/type/month partitions; never delete before verification","largestPartitions":[],"reason":null,"required":false,"schemaVersion":1,"shardId":"realestate-data-020"}
