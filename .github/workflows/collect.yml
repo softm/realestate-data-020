@@ -7,19 +7,20 @@ on:
     inputs:
       mode:
         type: choice
-        options: [bootstrap, build, auto, backfill, refresh]
-        default: bootstrap
+        options: [auto, backfill, refresh, build, bootstrap]
+        default: auto
+        description: 'Resume verified checkpoints and incomplete pages within existing request budgets'
   schedule:
-    - cron: '57 * * * *'
+    - cron: '59 * * * *'
 permissions:
   contents: write
   pages: write
   id-token: write
 jobs:
   regional:
-    if: github.event_name != 'schedule' || vars.COLLECTION_ENABLED == 'true'
-    uses: softm/softm.tojihannun/.github/workflows/prepare-data-shard.yml@89af50ba66244cb7ffba7c46e3a4e03088bf52d7
+    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@839c2a8c27877fb8af526e42961abdadd34d7fd6
     with:
-      mode: ${{ github.event_name == 'schedule' && 'auto' || inputs.mode || 'bootstrap' }}
+      engine_ref: 839c2a8c27877fb8af526e42961abdadd34d7fd6
+      mode: ${{ inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
