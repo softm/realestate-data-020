@@ -18,9 +18,9 @@ permissions:
   id-token: write
 jobs:
   regional:
-    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@839c2a8c27877fb8af526e42961abdadd34d7fd6
+    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@7cb4641565f9e71988825a88b52af59c613be140
     with:
-      engine_ref: 839c2a8c27877fb8af526e42961abdadd34d7fd6
+      engine_ref: 7cb4641565f9e71988825a88b52af59c613be140
       mode: ${{ inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
