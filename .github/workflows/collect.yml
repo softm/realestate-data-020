@@ -24,3 +24,5 @@ jobs:
       mode: ${{ inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
+
+# manual-run-trigger: 2026-11-13T01:17+09:00
