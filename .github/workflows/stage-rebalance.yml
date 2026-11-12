@@ -1,0 +1,55 @@
+name: Stage verified district transfer from realestate-data-010
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/stage-rebalance.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: regional-checkpoint-staging
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/checkout@v4
+        with:
+          repository: softm/softm.tojihannun
+          ref: 30e4c9516fb1b946e4969701538120c17892859f
+          path: _control
+          persist-credentials: false
+          sparse-checkout: |
+            scripts/distribution
+            data/transactions/rebalance-plan.json
+      - uses: actions/checkout@v4
+        with:
+          repository: softm/realestate-data-010
+          ref: main
+          path: _source
+          persist-credentials: false
+          sparse-checkout: data/transactions
+      - name: Stage and verify immutable source snapshot without API calls
+        run: |
+          python3 _control/scripts/distribution/stage_rebalance.py \
+            --root . --source _source \
+            --plan _control/data/transactions/rebalance-plan.json \
+            --target realestate-data-020
+      - name: Persist staged checkpoints without removing source records
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/transactions/collection-state.json data/transactions/segments rebalance-stage.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: stage verified district checkpoints for safe rebalancing'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
