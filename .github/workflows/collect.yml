@@ -18,7 +18,7 @@ permissions:
 jobs:
   regional:
     if: github.event_name != 'schedule' || vars.COLLECTION_ENABLED == 'true'
-    uses: softm/softm.tojihannun/.github/workflows/prepare-data-shard.yml@987926511865f87ed7466ca3b7bef70eac555a73
+    uses: softm/softm.tojihannun/.github/workflows/prepare-data-shard.yml@89af50ba66244cb7ffba7c46e3a4e03088bf52d7
     with:
       mode: ${{ github.event_name == 'schedule' && 'auto' || inputs.mode || 'bootstrap' }}
     secrets:
