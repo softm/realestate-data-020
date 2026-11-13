@@ -11,8 +11,7 @@ on:
         default: auto
         description: 'Resume verified checkpoints and incomplete pages within existing request budgets'
   schedule:
-    - cron: '59 * * * *'
-    - cron: '29 * * * *'
+    - cron: '2-59/10 * * * *'
 permissions:
   contents: write
   actions: write
@@ -20,9 +19,9 @@ permissions:
   id-token: write
 jobs:
   regional:
-    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@8cc83e8213e6caa8986e8a6547485d85f9e85010
+    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@3b5b3c003e3f366cca34d37d5e1a3fb982d53beb
     with:
-      engine_ref: 8cc83e8213e6caa8986e8a6547485d85f9e85010
+      engine_ref: 3b5b3c003e3f366cca34d37d5e1a3fb982d53beb
       mode: ${{ inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
