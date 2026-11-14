@@ -21,7 +21,7 @@ jobs:
   regional:
     uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@8bec3b1e87e173db0e9e2f6d989e284db93276a1
     with:
-      engine_ref: 8bec3b1e87e173db0e9e2f6d989e284db93276a1
+      engine_ref: 4e8f3f8daefa1018a5a0c0389cc0d8bac0c20bb7
       mode: ${{ inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
