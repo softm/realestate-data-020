@@ -7,11 +7,13 @@ on:
     inputs:
       mode:
         type: choice
-        options: [auto, backfill, refresh, build, bootstrap]
+        options: [auto, backfill, refresh, refresh-year, audit-history, build, bootstrap]
         default: auto
-        description: 'Resume verified checkpoints and incomplete pages within existing request budgets'
+        description: 'Resume checkpoints, refresh recent data, or run scheduled historical verification'
   schedule:
     - cron: '20 * * * *'
+    - cron: '50 3 * * 1'
+    - cron: '50 4 1 * *'
 permissions:
   contents: write
   actions: write
@@ -19,13 +21,9 @@ permissions:
   id-token: write
 jobs:
   regional:
-    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@8bec3b1e87e173db0e9e2f6d989e284db93276a1
+    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@3756e1f6e35414fcba0c3b5c70498b3591736551
     with:
-      engine_ref: 39ccce4a5e3e0e2ad16063c17865d91815a1ca2f
-      mode: ${{ inputs.mode || 'auto' }}
+      engine_ref: 3756e1f6e35414fcba0c3b5c70498b3591736551
+      mode: ${{ github.event_name == 'push' && 'build' || github.event_name == 'schedule' && github.event.schedule == '50 3 * * 1' && 'refresh-year' || github.event_name == 'schedule' && github.event.schedule == '50 4 1 * *' && 'audit-history' || inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
-
-# manual-run-trigger: 2026-11-13T01:17+09:00
-
-# pages-redeploy-trigger: 2026-11-13T02:10+09:00
