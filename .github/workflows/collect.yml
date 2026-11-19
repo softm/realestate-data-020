@@ -23,7 +23,7 @@ jobs:
   regional:
     uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@0a94be9ac51a17b0b054bf410599759b21415479
     with:
-      engine_ref: 0a94be9ac51a17b0b054bf410599759b21415479
+      engine_ref: dd9cc3a31aaba46f419e6020ae10e28b3e0b4004
       mode: ${{ github.event_name == 'push' && 'build' || github.event_name == 'schedule' && github.event.schedule == '50 3 * * 1' && 'refresh-year' || github.event_name == 'schedule' && github.event.schedule == '50 4 1 * *' && 'audit-history' || inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
