@@ -21,9 +21,9 @@ permissions:
   id-token: write
 jobs:
   regional:
-    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@3756e1f6e35414fcba0c3b5c70498b3591736551
+    uses: softm/softm.tojihannun/.github/workflows/collection-worker.yml@061fd8f6e6f91107d722def7bc9658e9744bce06
     with:
-      engine_ref: 3756e1f6e35414fcba0c3b5c70498b3591736551
+      engine_ref: 061fd8f6e6f91107d722def7bc9658e9744bce06
       mode: ${{ github.event_name == 'push' && 'build' || github.event_name == 'schedule' && github.event.schedule == '50 3 * * 1' && 'refresh-year' || github.event_name == 'schedule' && github.event.schedule == '50 4 1 * *' && 'audit-history' || inputs.mode || 'auto' }}
     secrets:
       MOLIT_API_KEY: ${{ secrets.MOLIT_API_KEY }}
